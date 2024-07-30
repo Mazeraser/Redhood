@@ -1,6 +1,7 @@
 using Assets.Codebase.Infrastructure;
 using Assets.Codebase.Infrastructure.InputService;
 using Assets.Codebase.Mechanics.MoveSystem;
+using Assets.Codebase.Mechanics.CameraHelper;
 using UnityEngine;
 using Zenject;
 
@@ -9,7 +10,7 @@ namespace Assets.Codebase.Mechanics.ControllSystem
     [RequireComponent(typeof(Jump))]
     [RequireComponent(typeof(Dash))]
     [RequireComponent(typeof(Walk))]
-    public class Player : MonoBehaviour,IControllable
+    public class Player : MonoBehaviour,IControllable,IInterestable
     {
         private IInput _input;
 
@@ -29,6 +30,8 @@ namespace Assets.Codebase.Mechanics.ControllSystem
             _input = input;
         }
 
+        public Transform GetTransform { get { return transform; } }
+
         private void Awake()
         {
             _input.JumpPerformed += Jump;
@@ -44,7 +47,7 @@ namespace Assets.Codebase.Mechanics.ControllSystem
         {
             ControllMove(_input.Velocity);
 
-            if (_input.JumpValue != 0f && !_jumped)
+            if (_input.JumpValue > 0f && !_jumped)
             {
                 timer += Time.fixedDeltaTime;
                 Jump(_input.Velocity);
@@ -59,6 +62,7 @@ namespace Assets.Codebase.Mechanics.ControllSystem
                 _jumped = false;
             }
         }
+
 
         public void ControllMove(Vector2 direction)
         {

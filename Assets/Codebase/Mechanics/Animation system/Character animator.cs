@@ -22,10 +22,10 @@ namespace Assets.Codebase.Mechanics.AnimationSystem
 
         public string LastMoveName { get; set; }
 
-        public void SetPhysicInteraction(Vector2 bodyVelocity) //IMPORTANT: work only with physic realization
+        public void SetPhysicInteraction(Vector2 bodyVelocity)
         {
             if (bodyVelocity.magnitude == 0)
-                SetState(0);
+                SetState(LastMoveName.Contains("Walk") ? 1:0);
             else if (bodyVelocity.y > 0)
                 SetState(2);
             else if (bodyVelocity.y < 0)
@@ -33,7 +33,7 @@ namespace Assets.Codebase.Mechanics.AnimationSystem
             else
             {
                 GetComponent<SpriteRenderer>().flipX = bodyVelocity.x < 0;
-                SetState(LastMoveName.Contains("Walk") ? 1:4);
+                SetState(4);
             }
 
             GetComponent<Animator>().SetFloat("State", (float)state);

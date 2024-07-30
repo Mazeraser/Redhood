@@ -1,6 +1,7 @@
 using Assets.Codebase.Mechanics.AnimationSystem;
 using Assets.Codebase.Mechanics.ControllSystem;
 using Assets.Codebase.Mechanics.MoveSystem;
+using Assets.Codebase.Trigger;
 using UnityEngine;
 
 namespace Assets.Codebase.Infrastructure
@@ -21,6 +22,8 @@ namespace Assets.Codebase.Infrastructure
 
             foreach (var movableComponent in GetComponents<MovableParent>())
                 movableComponent.MoveDelegate = delegate { _animator.LastMoveName = movableComponent.GetType().Name; };
+
+            EndLevelTrigger.CompleteLevelEvent += delegate { Debug.Log("Level ended"); };
         }
         private void Update()
         {

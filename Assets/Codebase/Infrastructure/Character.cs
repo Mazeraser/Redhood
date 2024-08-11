@@ -33,6 +33,8 @@ namespace Assets.Codebase.Infrastructure
         public void Move(Vector2 direction, IMovable movable)
         {
             movable.Turn(direction);
+            if (direction.x == 0)
+                _animator.LastMoveName = "Idle";
         }
         public void Move(Vector2 direction)
         {

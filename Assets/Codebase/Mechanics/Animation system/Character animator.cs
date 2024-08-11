@@ -12,10 +12,6 @@ namespace Assets.Codebase.Mechanics.AnimationSystem
             jump=2,
             fall=3,
             dash=4,
-            attack=5,
-            shoot=6,
-            shield=7,
-            take_damage=8,
         }
         private CharacterState state;
         public void SetState(int stateID) => state = (CharacterState)stateID;
@@ -31,12 +27,9 @@ namespace Assets.Codebase.Mechanics.AnimationSystem
             else if (bodyVelocity.y < 0)
                 SetState(3);
             else
-            {
-                GetComponent<SpriteRenderer>().flipX = bodyVelocity.x < 0;
                 SetState(4);
-            }
 
-            GetComponent<Animator>().SetFloat("State", (float)state);
+            GetComponent<Animator>().SetInteger("state", (int)state);
         }
     }
 }

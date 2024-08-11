@@ -4,6 +4,7 @@ using Assets.Codebase.Mechanics.MoveSystem;
 using Assets.Codebase.Mechanics.CameraHelper;
 using UnityEngine;
 using Zenject;
+using Assets.Codebase.Mechanics.LifeSystem;
 
 namespace Assets.Codebase.Mechanics.ControllSystem
 {
@@ -22,7 +23,7 @@ namespace Assets.Codebase.Mechanics.ControllSystem
 
         private bool _jumped;
 
-        private bool _isTurnedOnRight;
+        private bool _isTurnedOnRight=false;
 
         [Inject]
         private void Construct(IInput input)
@@ -41,11 +42,14 @@ namespace Assets.Codebase.Mechanics.ControllSystem
         private void Start()
         {
             _character = GetComponent<Character>();
+            PlayerLife.PlayerIsDeathEvent += DeactivateCharacter;
         }
 
         private void FixedUpdate()
         {
             ControllMove(_input.Velocity);
+
+            GetComponent<SpriteRenderer>().flipX = !_isTurnedOnRight;
 
             if (_input.JumpValue > 0f && !_jumped)
             {
@@ -83,6 +87,11 @@ namespace Assets.Codebase.Mechanics.ControllSystem
         private void Dash()
         {
             _character.Move(new Vector2(_isTurnedOnRight?1:-1,0), GetComponent<Dash>());
+        }
+
+        private void DeactivateCharacter()
+        {
+            _character = null;
         }
     }
 }
